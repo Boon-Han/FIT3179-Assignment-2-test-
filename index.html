@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+        <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
+
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+
+        <title>Australia Bushfires</title>
+
+    </head>
+    <body>
+
+        <h1> Australia Bushfires in 2023</h1>
+        <p>In 2023, Australia experienced significant bushfires especially in the northen regions like Northen Teritory, Queensland and the north side of Western Australia</p>
+
+        <div id="vis">
+        </div>
+
+        <div id="vis2">
+        </div>
+
+        <div id="vis3">
+        </div>
+
+        <script type="text/javascript">
+
+            var vis = "js/symbol_map.vg.json";
+            vegaEmbed('#vis', vis).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+            var vis2 = "js/area_chart.vg.json";
+            vegaEmbed('#vis2', vis2).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+            var vis3 = "js/pie_bar_chart.vg.json";
+            vegaEmbed('#vis3', vis3).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+
+        </script>
+
+    </body>
+</html>

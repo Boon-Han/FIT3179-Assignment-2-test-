@@ -1,0 +1,53 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title":"",
+    "data":{
+        "url": "https://raw.githubusercontent.com/Boon-Han/FIT3179-Week-9-Homework/main/modis_2023_Australia.csv"
+    },
+    "transform": [
+        {
+            "calculate": "toDate(datum.acq_date, '%d/%m/%Y')",
+            "as": "parsed_date"
+        }
+    ],
+    "vconcat":[
+        {
+            "width": 480,
+            "height": 240,
+            "mark": "area",
+            "encoding": {
+                "x":{
+                    "field":"parsed_date", 
+                    "type": "temporal", 
+                    "scale":{"domain":{"param": "brush"}},
+                    "axis":{"title":"Date", "format":"%d/%m/%Y"}
+                },
+                "y":{
+                    "aggregate": "average",
+                    "field":"frp",
+                    "type": "quantitative",
+                    "axis":{"title":"Fire Radiative Power (FRP)"}
+                }
+            }
+        },
+        {
+            "width": 480,
+            "height": 60,
+            "mark":"area",
+            "params": [
+                {
+                    "name": "brush", "select":{"type": "interval", "encodings": ["x"]}
+                }
+            ],
+            "encoding": {
+                "x":{"field":"parsed_date", "type": "temporal", "axis":{"grid":false, "title":"Date", "format":"%d/%m/%Y"}},
+                "y":{
+                    "aggregate": "average",
+                    "field":"frp",
+                    "type": "quantitative",
+                    "axis":{"tickCount":3, "grid":false, "title":"FRP"}
+                }
+            }
+        }
+    ]
+}

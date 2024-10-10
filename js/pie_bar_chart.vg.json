@@ -1,0 +1,106 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title":"",
+    "data":{
+        "url": "https://raw.githubusercontent.com/Boon-Han/FIT3179-Week-9-Homework/main/modis_2023_Australia.csv"
+    },
+    "params": [
+        {
+            "name": "month_selection",
+            "bind":{
+                "input": "select",
+                "options": [
+                    null,1,2,3,4,5,6,7,8,9,10,11,12
+                ],
+                "labels": [
+                    "Show All",
+                    "January",
+                    "Febuary",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                ],
+                "name": "Month Selection: "
+            }
+        }
+    ],
+    "transform": [
+        {
+            "calculate": "if(datum.scan < 2.0, 'Small Fire', if(datum.scan < 3.0, 'Moderate Fire', if(datum.scan < 4.0, 'Large Fire', if(datum.scan < 4.5, 'Very Large Fire', 'Massive Fire'))))",
+            "as": "fireCategory"
+        },
+        {
+            "calculate": "split(datum.acq_date, '/')[1]",
+            "as": "month"
+        },
+        {
+            "calculate": "if(datum.month == '1', 'January', if(datum.month == '2', 'February', if(datum.month == '3', 'March', if(datum.month == '4', 'April', if(datum.month == '5', 'May', if(datum.month == '6', 'June', if(datum.month == '7', 'July', if(datum.month == '8', 'August', if(datum.month == '9', 'September', if(datum.month == '10', 'October', if(datum.month == '11', 'November', 'December')))))))))))",
+            "as": "monthName"
+        },
+        {
+            "filter": "month_selection == null || datum.month == month_selection"
+        }
+    ],
+    "hconcat": [
+        {
+            "width":200,
+            "height":200,
+            "mark":{
+                "type": "arc", "innerRadius":0
+            },
+            "encoding": {
+                "theta": {
+                    "aggregate": "count",
+                    "field": "fireCategory",
+                    "type": "quantitative"
+                },
+                "color": {
+                    "field": "fireCategory",
+                    "type": "nominal",
+                    "title":"Fire Categories",
+                    "scale": {
+                        "domain": ["Small Fire", "Moderate Fire", "Large Fire", "Very Large Fire", "Massive Fire"],
+                        "range": ["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"]
+                    },
+                    "legend":{
+                        "orient": "left"
+                    }
+                },
+                "tooltip":[
+                    {"field":"fireCategory", "type": "nominal", "title": "Fire Category: "},
+                    {"field":"fireCategory", "type": "quantitative", "aggregate":"count", "title":"Count: "}
+                ]
+            }
+        },
+        {
+            "width":300,
+            "height":200,
+            "mark":"bar",
+            "encoding": {
+                "x":{
+                    "field":"month",
+                    "type": "ordinal",
+                    "title":"Month",
+                    "sort": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                    "axis": {"labelAngle": 0}
+                },
+                "y":{
+                    "aggregate": "count",
+                    "type": "quantitative",
+                    "title": "Count of Bushfires"
+                },
+                "tooltip":[
+                    {"field":"monthName","type": "ordinal","title":"Month: "},
+                    {"aggregate":"count", "type": "quantitative","title":"Bushfire Count: "}
+                ] 
+            }
+        }
+    ]
+}
